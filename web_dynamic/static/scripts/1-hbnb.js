@@ -1,14 +1,18 @@
-$(document).ready(init);
-
-function init () {
-  const amenityObj = {};
-  $('.amenities .popover input').change(function () {
-    if ($(this).is(':checked')) {
-      amenityObj[$(this).attr('data-name')] = $(this).attr('data-id');
-    } else if ($(this).is(':not(:checked)')) {
-      delete amenityObj[$(this).attr('data-name')];
-    }
-    const names = Object.keys(amenityObj);
-    $('.amenities h4').text(names.sort().join(', '));
-  });
-}
+let storing = {};
+window.onload = (()=>{
+    $('input[type=checkbox]').click(
+        () => {
+            if (this.checked) {
+                storing[$(this).data('id')] = $(this).data('name');
+                $('.amenities h4').text(Object.values(storing).join(', '));
+            } else {
+                delete storing[$(this).data('id')];
+                if (Object.values(storing).length === 0) {
+                    $('.amenities h4').html('&nbsp;');
+                } else {
+                    $('.amenities h4').text(Object.values(storing).join(', '));
+                }
+            }
+        }
+    );
+})
